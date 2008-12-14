@@ -26,12 +26,12 @@ from jabberbot import JabberBot
 
 import settings
 
-def unescape(s):
+def unescape(input_string):
     "Helper to unescape html entities and other encoding"
-    p = htmllib.HTMLParser(None)
-    p.save_bgn()
-    p.feed(s)
-    return p.save_end()
+    parser = htmllib.HTMLParser(None)
+    parser.save_bgn()
+    parser.feed(input_string)
+    return parser.save_end()
 
 class LastFmJabberBot(JabberBot):
     """Personal LastFM search bot. Useful for looking for tracks you can't 
@@ -54,10 +54,12 @@ remember the name of."""
 
             return """
 %s %s by %s
+%s
 
 %s
-""" % (intro, title, artist_name, unescape(re.sub(r'<[^>]*?>', '', artist_bio)))
-        except:
+""" % (intro, title, artist_name, url,
+            unescape(re.sub(r'<[^>]*?>', '', artist_bio)))
+        except IndexError:
             return "We didn't find anything!"    
 
     def bot_next(self, mess, args):
@@ -91,7 +93,6 @@ remember the name of."""
         except:
             # something went horribly wrong
             return "A problem occured"
-            sys.exit(2)
         
         if not search_for:
             return "You have to search for something"
