@@ -57,7 +57,7 @@ remember the name of."""
 %s
 
 %s
-""" % (intro, title, artist_name, url,
+""" % (intro, title, artist_name, url.replace("%2B","_"),
             unescape(re.sub(r'<[^>]*?>', '', artist_bio)))
         except IndexError:
             return "We didn't find anything!"    
