@@ -1,0 +1,4 @@
+.DS_Store
+*.pyc
+settings.py
+pylast.py
