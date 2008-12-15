@@ -3,17 +3,7 @@
 """
 A jabber bot that sits and waits for you to ask it questions
 then goes off to Last.fm to get some information about the track
-you mentioned. Requires the pylast library that can be found at
-http://code.google.com/p/pylast
-
-Also requires a settings file with the following constants defined:
-
-USERNAME = ""
-PASSWORD = ""
-API_KEY = ""
-API_SECRET = ""
-SESSION_KEY = ""
-
+it thinks you mentioned.
 """
 
 import sys
@@ -21,10 +11,15 @@ import re
 import htmllib
 from xml.dom import minidom
 
-import pylast
+import ext.pylast as pylast
 from jabberbot import JabberBot
 
-import settings
+# remember to setup your settings file
+try:
+    from settings import USERNAME, PASSWORD, API_KEY, API_SECRET, SESSION_KEY    
+except ImportError, error:
+    print "You have to create a local settings file (Error: %s)" % error
+    sys.exit(1)
 
 def unescape(input_string):
     "Helper to unescape html entities and other encoding"
@@ -35,23 +30,26 @@ def unescape(input_string):
 
 class LastFmJabberBot(JabberBot):
     """Personal LastFM search bot. Useful for looking for tracks you can't 
-remember the name of."""
+remember the full name of. Or for findind out who sung a track."""
 
     def _display_track_details(self):
         "Display details about the track"
         try:
-            # get any info we can from the API
-            title = self.results[self.pointer].getTitle()
-            url = self.results[self.pointer].getURL()
-            artist = self.results[self.pointer].getArtist()
+            # get any info we can from the cache
+            track = self.results[self.pointer]
+            title = track.getTitle()
+            url = track.getURL()
+            artist = track.getArtist()
             artist_bio = artist.getBioSummary()
             artist_name = artist.getName()
 
+            # if it's the first result lets be more certain
             if self.pointer == 0:
                 intro = "you probably mean"
             else:
                 intro = "you might have meant"
 
+            # dipslay a nice message if we found something
             return """
 %s %s by %s
 %s
@@ -65,6 +63,7 @@ remember the name of."""
     def bot_next(self, mess, args):
         "get details about the next track in the list"
         try:
+            # we need to check we have already done a search
             self.pointer = self.pointer + 1
             return self._display_track_details()
         except AttributeError:
@@ -73,6 +72,7 @@ remember the name of."""
     def bot_prev(self, mess, args):
         "get details about the previous track in the list"
         try:
+            # we need to check we have already done a search
             self.pointer = self.pointer - 1
             return self._display_track_details()
         except AttributeError:
@@ -98,8 +98,8 @@ remember the name of."""
             return "You have to search for something"
         
         # we can now do a search
-        search = pylast.TrackSearch(search_for, None, settings.API_KEY, \
-            settings.API_SECRET, settings.SESSION_KEY)
+        search = pylast.TrackSearch(search_for, None, API_KEY, \
+            API_SECRET, SESSION_KEY)
         # and get the results
         self.results = search.getResults()
         
@@ -108,7 +108,7 @@ remember the name of."""
 
 def main():
     "Connect to the server and run the bot forever"
-    jabber_bot = LastFmJabberBot(settings.USERNAME, settings.PASSWORD)
+    jabber_bot = LastFmJabberBot(USERNAME, PASSWORD)
     jabber_bot.serve_forever()
 
 if __name__ == '__main__':    
