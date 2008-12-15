@@ -1,0 +1,63 @@
+This XMPP bot was produced as part of the Last.fm hackday in London in December 2008. It provides a simple search interface over IM to a portion of the Last.fm API.
+
+h2. Usage
+
+You can run it from the command line like so:
+
+<pre>./lastbot.py</pre>
+
+Note that if it crashes for whatever reason then it will simply stop. Again resilience could be backed in if you were using it for real.
+
+When up and running you should be able to talk to it with your IM client. Simply send the user specified in the settings file a message like so:
+
+<pre>search {query}</pre>
+
+So if you wanted to search for "astley" you would type:
+
+<pre>search astley</pre>
+
+Which would probably give you:
+
+<pre>you probably mean Never Gonna Give You Up by Rick Astley
+http://www.last.fm/music/Rick_Astley/_/Never_Gonna_Give_You_Up
+
+Richard Paul Astley (born February 6, 1966) is an English dance-pop singer, songwriter and musician. He was born in Newton-le-Willows, St Helens, Lancashire, England. Astley currently resides in Richmond, Surrey with his Danish girlfriend, Lene Bausager, and their daughter, Emilie. In 1985, Astley was playing the club circuit as a singer with a soul band named FBI, when he was seen by the record producer Pete Waterman and persuaded to come to London to work at the PWL recording studio.</pre>
+
+If the first result that comes back isn't the one you wanted you can ask for the next result by simply sending _next_ in another message. You can use _prev_ as well to come back through the set.
+
+<pre>next</pre>
+
+You can always send it a call for help at any time which should return the instructions to you via an IM message.
+
+<pre>help</pre>
+
+Which should return something like:
+
+<pre>Personal LastFM search bot. Useful for looking for tracks you can't 
+remember the full name of. Or for findind out who sung a track.
+
+search: do a search for tracks
+prev: get details about the previous track in the list
+next: get details about the next track in the list</pre>
+
+h2. Installation
+
+It requires the pylast library that can be 
+found at http://code.google.com/p/pylast. A compatible version is included in the ext directory and this is used unless you change the code.
+
+You also need a settings file with the following constants defined:
+
+<pre>USERNAME = ""
+PASSWORD = ""
+API_KEY = ""
+API_SECRET = ""
+SESSION_KEY = ""</pre>
+
+The username and password are for the jabber server you want to connect to. You can get your API details from the Last.fm website at http://last.fm/api/account. Each application requires a session key that you will need to retrieve from Last.fm via the webservice. This is explained in the pylast documentation at http://code.google.com/p/pylast/wiki/Authentication
+
+h2. Limitations
+
+It has a few limitations you should be aware of:
+
+* It's purposely pretty small. You _could_ extend it to cover every corner of the API, but it's quite a big API. And this was designed as a simple example of writing a functioning bot.
+* Because of how it maintains state it doesn't deal well with multiple people talking to it at once. It gets a bit confused in fact. This is more because it's a hack than anything else, you could store the results in a hash keyed off a session identifier or similar if you wanted.
