@@ -21,7 +21,13 @@ Which would probably give you:
 <pre>you probably mean Never Gonna Give You Up by Rick Astley
 http://www.last.fm/music/Rick_Astley/_/Never_Gonna_Give_You_Up
 
-Richard Paul Astley (born February 6, 1966) is an English dance-pop singer, songwriter and musician. He was born in Newton-le-Willows, St Helens, Lancashire, England. Astley currently resides in Richmond, Surrey with his Danish girlfriend, Lene Bausager, and their daughter, Emilie. In 1985, Astley was playing the club circuit as a singer with a soul band named FBI, when he was seen by the record producer Pete Waterman and persuaded to come to London to work at the PWL recording studio.</pre>
+Richard Paul Astley (born February 6, 1966) is an English dance-pop singer,
+songwriter and musician. He was born in Newton-le-Willows, St Helens,
+Lancashire, England. Astley currently resides in Richmond, Surrey with his 
+Danish girlfriend, Lene Bausager, and their daughter, Emilie. In 1985, Astley 
+was playing the club circuit as a singer with a soul band named FBI, when he 
+was seen by the record producer Pete Waterman and persuaded to come to London 
+to work at the PWL recording studio.</pre>
 
 If the first result that comes back isn't the one you wanted you can ask for the next result by simply sending _next_ in another message. You can use _prev_ as well to come back through the set.
 
